@@ -1,7 +1,7 @@
 # Дипломная работа
 ## Планировщик задач. Итоговая работа по курсу Python-разработчик.
 ### Стек
-python3.11, Django4.1.4, Postgres
+python3.11, Django4.1.5, Postgres
 
 ### Установка зависимостей
 pip install poetry
