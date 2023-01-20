@@ -7,7 +7,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('ping/', health_check, name='health-check'),
     path('core/', include('todolist.core.urls')),
-    path('oauth/', include('social_django.urls', namespace='social')),
+    # path('oauth/', include('social_django.urls', namespace='social')),
 ]
 
 if settings.DEBUG:
