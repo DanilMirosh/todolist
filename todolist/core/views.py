@@ -9,14 +9,14 @@ class SignupView(generics.CreateAPIView):
     serializer_class = CreateUserSerializer
 
 
-class LoginView(generics.GenericAPIView):
+class LoginView(generics.CreateAPIView):
     serializer_class = LoginSerializer
 
-    def post(self, request, *args, **kwargs):
+    def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        login(request=request, user=serializer.save())
-        return Response(serializer.data)
+        login(request=self.request, user=serializer.save())
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class ProfileView(generics.RetrieveUpdateDestroyAPIView):
@@ -27,9 +27,8 @@ class ProfileView(generics.RetrieveUpdateDestroyAPIView):
     def get_object(self):
         return self.request.user
 
-    def delete(self, request, *args, **kwargs):
-        logout(request)
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    def perform_destroy(self, instance):
+        logout(self.request)
 
 
 class UpdatePasswordView(generics.UpdateAPIView):
