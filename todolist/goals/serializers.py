@@ -1,4 +1,6 @@
-from rest_framework import serializers, exceptions
+from typing import Type
+
+from rest_framework import serializers
 from rest_framework.exceptions import PermissionDenied
 
 from todolist.core.serializers import ProfileSerializer
@@ -10,8 +12,8 @@ class GoalCategoryCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = GoalCategory
-        fields = '__all__'
         read_only_fields = ('id', 'created', 'updated', 'user', 'is_deleted')
+        fields = '__all__'
 
 
 class GoalCategorySerializer(serializers.ModelSerializer):
@@ -20,29 +22,23 @@ class GoalCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = GoalCategory
         fields = '__all__'
-        read_only_fields = ('id', 'created', 'updated', 'user', 'is_deleted')
+        read_only_fields = ('id', 'created', 'updated', 'user')
 
 
 class GoalCreateSerializer(serializers.ModelSerializer):
-    """Класс модели сериализатора для создания цели"""
     category = serializers.PrimaryKeyRelatedField(
         queryset=GoalCategory.objects.filter(is_deleted=False)
     )
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
-        """Мета-класс для указания модели для сериализатора, полей модели сериализатора,
-                         и не изменяемых полей"""
         model = Goal
         fields = '__all__'
         read_only_fields = ('id', 'created', 'updated', 'user')
 
-    def validated_category(self, value):
-        """Метод для валидации данных категории целей. Метод проверяет, является ли
-        пользователь создателем категории, или является ли он участником доски с этой
-        категорией в роли writer"""
+    def validated_category(self, value: Type[GoalCategory]):
         if self.context['request'].user != value.user:
-            raise exceptions.PermissionDenied
+            raise PermissionDenied
         return value
 
 
@@ -56,7 +52,7 @@ class GoalSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ('id', 'created', 'updated', 'user')
 
-    def validated_category(self, value):
+    def validated_category(self, value: Type[GoalCategory]):
         if self.context['request'].user != value.user:
             raise PermissionDenied
         return value
