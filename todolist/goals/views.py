@@ -1,8 +1,8 @@
-from django.db import transaction
 from django.db.models import Q
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import generics, permissions
+from rest_framework import permissions
 from rest_framework.filters import OrderingFilter, SearchFilter
+from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView
 
 from todolist.goals.filters import GoalDateFilter
 from todolist.goals.models import GoalCategory, Goal, GoalComment
@@ -10,24 +10,27 @@ from todolist.goals.serializers import GoalCategoryCreateSerializer, GoalCategor
     GoalSerializer, GoalCommentCreateSerializer, GoalCommentSerializer
 
 
-class GoalCategoryCreateView(generics.CreateAPIView):
-    """Ручка для создания категории"""
+class GoalCategoryCreateView(CreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = GoalCategoryCreateSerializer
 
 
-class GoalCategoryListView(generics.ListAPIView):
-    """Ручка для отображения списка категорий к которым у пользователя есть доступ"""
+class GoalCategoryListView(ListAPIView):
     model = GoalCategory
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = GoalCategorySerializer
+    filter_backends = [OrderingFilter, SearchFilter]
+    ordering_fields = ['title', 'created']
+    ordering = ['title']
+    search_fields = ['title']
 
     def get_queryset(self):
-        return GoalCategory.objects.select_related('user').filter(user_id=self.request.user.id, is_deleted=False)
+        return GoalCategory.objects.filter(
+            user=self.request.user, is_deleted=False
+        )
 
 
-class GoalCategoryView(generics.RetrieveUpdateDestroyAPIView):
-    """Ручка для отображения, редактирования и удаления категории к которым у пользователя есть доступ"""
+class GoalCategoryView(RetrieveUpdateDestroyAPIView):
     model = GoalCategory
     serializer_class = GoalCategorySerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -36,21 +39,17 @@ class GoalCategoryView(generics.RetrieveUpdateDestroyAPIView):
         return GoalCategory.objects.filter(user=self.request.user, is_deleted=False)
 
     def perform_destroy(self, instance: GoalCategory):
-        """Метод удаляет категорию, а у всех целей в этой категории меняет статус на архивный"""
-        with transaction.atomic():
-            instance.is_deleted = True
-            instance.save(update_fields=('is_deleted',))
-            Goal.objects.filter(category=instance).update(status=Goal.Status.archived)
+        instance.is_deleted = True
+        instance.save(update_fields=('is_deleted',))
         return instance
 
 
-class GoalCreateView(generics.CreateAPIView):
-    """Ручка для создания цели"""
+class GoalCreateView(CreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = GoalCreateSerializer
 
 
-class GoalListView(generics.ListAPIView):
+class GoalListView(ListAPIView):
     model = Goal
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = GoalSerializer
@@ -62,27 +61,27 @@ class GoalListView(generics.ListAPIView):
 
     def get_queryset(self):
         return Goal.objects.filter(
-            Q(user_id=self.request.user.id) & ~Q(status=Goal.Status.archived) & Q(category__is_deleted=False)
+            Q(user_id=self.request.user.id) & ~Q(status=Goal.Status.archived)
         )
 
 
-class GoalView(generics.RetrieveUpdateDestroyAPIView):
+class GoalView(RetrieveUpdateDestroyAPIView):
     model = Goal
     serializer_class = GoalSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         return Goal.objects.filter(
-            Q(user_id=self.request.user.id) & ~Q(status=Goal.Status.archived) & Q(category__is_deleted=False)
+            Q(user_id=self.request.user.id) & ~Q(status=Goal.Status.archived)
         )
 
 
-class GoalCommentCreateView(generics.CreateAPIView):
+class GoalCommentCreateView(CreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = GoalCommentCreateSerializer
 
 
-class GoalCommentListView(generics.ListAPIView):
+class GoalCommentListView(ListAPIView):
     model = GoalComment
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = GoalCommentSerializer
@@ -94,7 +93,7 @@ class GoalCommentListView(generics.ListAPIView):
         return GoalComment.objects.filter(user_id=self.request.user.id)
 
 
-class GoalCommentView(generics.RetrieveUpdateDestroyAPIView):
+class GoalCommentView(RetrieveUpdateDestroyAPIView):
     model = GoalComment
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = GoalCommentSerializer
