@@ -3,6 +3,10 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    path('board/create', views.BoardCreateView.as_view(), name='board-create'),
+    path('board/list', views.BoardListView.as_view(), name='board-list'),
+    path('board/<pk>', views.BoardView.as_view(), name='retrieve-update-destroy-board'),
+
     path('goal_category/create', views.GoalCategoryCreateView.as_view(), name='category-create'),
     path('goal_category/list', views.GoalCategoryListView.as_view(), name='category-list'),
     path('goal_category/<pk>', views.GoalCategoryView.as_view(), name='category-detail'),
