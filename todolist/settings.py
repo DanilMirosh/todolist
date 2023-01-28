@@ -15,15 +15,20 @@ DEBUG = env.bool('DEBUG', default=False)
 ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
+    # Django apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Third-party apps
     'rest_framework',
     'social_django',
+    'django_filters',
+    # Project apps
     'todolist.core',
+    'todolist.goals'
 ]
 
 MIDDLEWARE = [
@@ -109,5 +114,8 @@ SOCIAL_AUTH_VK_EXTRA_DATA = [
 SOCIAL_AUTH_NEW_USER_REDIRECT_URL = '/logged-in/'
 SOCIAL_AUTH_USER_MODEL = 'core.User'
 
-# CSRF_COOKIE_SECURE = True
-# SESSION_COOKIE_SECURE = True
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    # 'DATETIME_FORMAT': '%Y-%m-%d %H:%M:%S',
+    # 'TEST_REQUEST_DEFAULT_FORMAT': 'json',
+}
