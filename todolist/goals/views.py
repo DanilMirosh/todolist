@@ -15,7 +15,7 @@ from todolist.goals.serializers import GoalCategoryCreateSerializer, GoalCategor
 
 
 class BoardCreateView(CreateAPIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [BoardPermission]
     serializer_class = BoardCreateSerializer
 
 
