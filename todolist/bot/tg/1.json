@@ -1,0 +1,20 @@
+{
+  "ok": true,
+  "result": {
+    "message_id": 2,
+    "from": {
+      "id": 6076238690,
+      "is_bot": true,
+      "first_name": "todolist",
+      "username": "todosky_bot"
+    },
+    "chat": {
+      "id": 1464290344,
+      "first_name": "\u0414\u0430\u043d\u0438\u043b",
+      "username": "DanilMirosh",
+      "type": "private"
+    },
+    "date": 1675081598,
+    "text": "hello"
+  }
+}
