@@ -72,7 +72,8 @@ class Goal(BaseModel):
         to=GoalCategory,
         verbose_name='Категория',
         on_delete=models.CASCADE,
-        related_name='goals')
+        related_name='goals'
+    )
     status = models.PositiveSmallIntegerField(
         verbose_name='Статус',
         choices=Status.choices,
@@ -83,7 +84,7 @@ class Goal(BaseModel):
         choices=Priority.choices,
         default=Priority.medium
     )
-    due_date = models.DateTimeField(verbose_name='Дата выполнеия', null=True, blank=True)
+    due_date = models.DateTimeField(verbose_name='Дата выполнения', null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.PROTECT, related_name='goals', verbose_name='Автор')
 
     def __str__(self):
