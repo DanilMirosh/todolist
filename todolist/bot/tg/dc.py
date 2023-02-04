@@ -5,14 +5,16 @@ class MessageFrom(BaseModel):
     id: int
     is_bot: bool
     first_name: str
+    last_name: str | None = None
     username: str
 
 
 class Chat(BaseModel):
     id: int
-    first_name: str
-    username: str
-    type: str
+    first_name: str | None = None
+    last_name: str | None = None
+    username: str | None = None
+    type: str | None = None
 
 
 class Message(BaseModel):
@@ -20,7 +22,7 @@ class Message(BaseModel):
     from_: MessageFrom = Field(..., alias='from')
     chat: Chat
     date: int
-    text: str
+    text: str | None = None
 
     class Config:
         allow_population_by_field_name = True
@@ -36,6 +38,6 @@ class GetUpdatesResponse(BaseModel):
     result: list[UpdateObj] = []
 
 
-class SendMessageResponse(BaseModel):
+class SendMessagesResponse(BaseModel):
     ok: bool
     result: Message
