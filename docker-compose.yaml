@@ -82,7 +82,10 @@ services:
       api:
         condition: service_healthy
     volumes:
-      - ./todolist/:/opt/todolist
+      - ./todolist/bot/:/opt/todolist/bot/
+    command: python manage.py runbot
+    networks:
+      - backend_nw
 
 
 volumes:
