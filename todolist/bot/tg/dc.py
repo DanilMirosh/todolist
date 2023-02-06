@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel, Field
 
 
@@ -6,7 +8,7 @@ class MessageFrom(BaseModel):
     id: int
     first_name: str
     last_name: str | None = None
-    username: str
+    username: Optional[str] | None = None
 
 
 class Chat(BaseModel):
