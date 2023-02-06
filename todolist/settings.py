@@ -28,7 +28,8 @@ INSTALLED_APPS = [
     'django_filters',
     # Project apps
     'todolist.core',
-    'todolist.goals'
+    'todolist.goals',
+    'todolist.bot',
 ]
 
 MIDDLEWARE = [
@@ -119,3 +120,5 @@ REST_FRAMEWORK = {
     # 'DATETIME_FORMAT': '%Y-%m-%d %H:%M:%S',
     # 'TEST_REQUEST_DEFAULT_FORMAT': 'json',
 }
+
+BOT_TOKEN = env.str('BOT_TOKEN')
