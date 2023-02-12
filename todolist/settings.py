@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import Any
 
 from envparse import env
 
@@ -97,61 +96,61 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'core.User'
 
-LOGGING: dict[str, Any] = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'filters': {
-        'health-check': {
-            '()': 'todolist.filters.HealthCheckFilter',
-        },
-    },
-    'formatters': {
-        'console': {
-            'format': '%(asctime)s - %(levelname)s - %(message)s',
-            'datefmt': '%Y-%m--%d %H:%M:%S',
-        },
-        'sample': {
-            'format': '%(asctime)s - %(levelname)s - %(module)s - %(message)s',
-            'datefmt': '%Y-%m--%d %H:%M:%S',
-        }
-    },
-    'handlers': {
-        'console': {
-            'level': 'DEBUG',
-            'filters': ['health-check'],
-            'class': 'logging.StreamHandler',
-            'formatter': 'console',
-        },
-        'project': {
-            'level': 'DEBUG',
-            'filters': ['health-check'],
-            'class': 'logging.StreamHandler',
-            'formatter': 'sample',
-        },
-    },
-    'loggers': {
-        '': {
-            'level': 'DEBUG' if DEBUG else 'INFO',
-            'handlers': ['console'],
-        },
-        'faker.providers': {
-            'level': 'INFO',
-        },
-        'django.server': {
-            'level': 'INFO',
-            'handlers': ['console'],
-        },
-    }
-}
-
-if env.bool('SQL_ECHO', False):
-    LOGGING['loggers'].update({
-        'django.db': {
-            'level': 'DEBUG',
-            'handlers': ['console'],
-            'propagate': False
-        }
-    })
+# LOGGING: dict[str, Any] = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'filters': {
+#         'health-check': {
+#             '()': 'todolist.filters.HealthCheckFilter',
+#         },
+#     },
+#     'formatters': {
+#         'console': {
+#             'format': '%(asctime)s - %(levelname)s - %(message)s',
+#             'datefmt': '%Y-%m--%d %H:%M:%S',
+#         },
+#         'sample': {
+#             'format': '%(asctime)s - %(levelname)s - %(module)s - %(message)s',
+#             'datefmt': '%Y-%m--%d %H:%M:%S',
+#         }
+#     },
+#     'handlers': {
+#         'console': {
+#             'level': 'DEBUG',
+#             'filters': ['health-check'],
+#             'class': 'logging.StreamHandler',
+#             'formatter': 'console',
+#         },
+#         'project': {
+#             'level': 'DEBUG',
+#             'filters': ['health-check'],
+#             'class': 'logging.StreamHandler',
+#             'formatter': 'sample',
+#         },
+#     },
+#     'loggers': {
+#         '': {
+#             'level': 'DEBUG' if DEBUG else 'INFO',
+#             'handlers': ['console'],
+#         },
+#         'faker.providers': {
+#             'level': 'INFO',
+#         },
+#         'django.server': {
+#             'level': 'INFO',
+#             'handlers': ['console'],
+#         },
+#     }
+# }
+#
+# if env.bool('SQL_ECHO', False):
+#     LOGGING['loggers'].update({
+#         'django.db': {
+#             'level': 'DEBUG',
+#             'handlers': ['console'],
+#             'propagate': False
+#         }
+#     })
 
 # Social Oauth
 SOCIAL_AUTH_JSONFIELD_ENABLED = True
@@ -173,7 +172,7 @@ SOCIAL_AUTH_USER_MODEL = 'core.User'
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     # 'DATETIME_FORMAT': '%Y-%m-%d %H:%M:%S',
-    # 'TEST_REQUEST_DEFAULT_FORMAT': 'json',
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json',
 }
 
 BOT_TOKEN = env.str('BOT_TOKEN')
