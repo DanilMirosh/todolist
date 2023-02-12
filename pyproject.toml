@@ -23,6 +23,12 @@ pytest = "^7.2.1"
 pre-commit = "^2.21.0"
 ansible-vault-win = "^1.0.0"
 
+
+[tool.poetry.group.test.dependencies]
+pytest-faker = "^2.0.0"
+pytest-factoryboy = "^2.5.1"
+pytest-django = "^4.5.2"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

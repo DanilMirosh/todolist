@@ -132,7 +132,10 @@ LOGGING: dict[str, Any] = {
     'loggers': {
         '': {
             'level': 'DEBUG' if DEBUG else 'INFO',
-            'handlers': ['project'],
+            'handlers': ['console'],
+        },
+        'faker.providers': {
+            'level': 'INFO',
         },
         'django.server': {
             'level': 'INFO',
