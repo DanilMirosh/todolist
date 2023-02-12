@@ -2,7 +2,6 @@ import pytest
 
 
 @pytest.mark.django_db
-# @pytest.mark.skip
 def test_board_update(client, create_login_user, create_another_user):
     """Тест на редактирование информации о доске и добавлении участников"""
     board_create = client.post('/goals/board/create', {'title': 'test board'}, content_type='application/json')
