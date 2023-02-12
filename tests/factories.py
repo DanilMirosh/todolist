@@ -62,7 +62,7 @@ class CategoryFactory(DatesFactoryMixin):
     user = factory.SubFactory(UserFactory)
 
     class Meta:
-        model = 'goals.Category'
+        model = 'goals.GoalCategory'
 
 
 @register
@@ -86,4 +86,4 @@ class CommentFactory(DatesFactoryMixin):
     text = factory.Faker('text')
 
     class Meta:
-        model = 'goals.Comment'
+        model = 'goals.GoalComment'
