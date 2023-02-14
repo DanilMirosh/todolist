@@ -26,3 +26,14 @@
 8. Накатываем миграции в БД (python manage.py migrate)
 9. Создаём суперпользователя для админки (python manage.py createsuperuser)
 10. Запускаем проект (python manage.py runserver)
+
+### Запуск тестов:
+
+1. Запустить контейнер с PostgreSQL:
+```python
+docker compose up db -d
+```
+2. Выполнить команду:
+```python
+pytest
+```
