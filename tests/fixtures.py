@@ -60,7 +60,7 @@ def create_board(client, create_login_user):
 def create_category(client, create_board):
     """Фикстура создания категории"""
     create_category = client.post(
-        '/goals/goals_category/create',
+        '/goals/goal_category/create',
         {
             'title': 'test_category',
             'board': create_board.data['id']
